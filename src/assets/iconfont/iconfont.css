@@ -1,0 +1,71 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 3610559 */
+  src: url('/src/assets/iconfont/iconfont.woff2?t=1661423396469') format('woff2'),
+       url('iconfont.woff?t=1661423396469') format('woff'),
+       url('iconfont.ttf?t=1661423396469') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont", sans-serif !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-book_circle_fill:before {
+  content: "\e632";
+}
+
+.icon-cloudupload-fill:before {
+  content: "\e7da";
+}
+
+.icon-doc_circle_fill:before {
+  content: "\e81b";
+}
+
+.icon-tupian:before {
+  content: "\e727";
+}
+
+.icon-yinle-tianchong:before {
+  content: "\e73c";
+}
+
+.icon-shipin1:before {
+  content: "\e629";
+}
+
+.icon-jichuguanli:before {
+  content: "\e651";
+}
+
+.icon-Weblogic:before {
+  content: "\e683";
+}
+
+.icon-picture:before {
+  content: "\e610";
+}
+
+.icon-home-circle:before {
+  content: "\e60f";
+}
+
+.icon-icon:before {
+  content: "\e694";
+}
+
+.icon-yinle:before {
+  content: "\e628";
+}
+
+.icon-yingxionglianmeng:before {
+  content: "\e772";
+}
+
+.icon-shipin:before {
+  content: "\e62c";
+}
+

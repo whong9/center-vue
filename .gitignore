@@ -21,3 +21,6 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+/public/myResources/她/
+/public/myResources/maple/
+/public/myResources/
