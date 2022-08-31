@@ -135,7 +135,7 @@ a {
 }
 
 .wrap {
-  width: 250px;
+  width: 220px;
   height: 100%;
   background-size: cover;
   display: flex;

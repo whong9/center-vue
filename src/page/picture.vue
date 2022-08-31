@@ -43,11 +43,13 @@ export default {
     width: 100%;
   }
   .picture-main .index-right-top {
-    margin: 25px 3px 25px 6%;
-    height: 8%;
+    margin: 2% 0 12px 3.7%;
+    height: 10%;
+    background-color: white;
   }
   .picture-main .index-right-bottom {
     height: 100%;
     width: 100%;
+    background-color: white;
   }
 </style>
