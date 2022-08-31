@@ -5,12 +5,12 @@
     </div>
     <div class="video-main-bottom">
       <div class="video-main-bottom-cardList">
-        <div v-for="(path, index) of paths" :key="index" class="video-main-bottom-cardList-card">
+        <div v-for="(video, index) of videos" :key="index" class="video-main-bottom-cardList-card">
           <div class="video-main-bottom-cardList-card-top">
-            <video controls :src="paths.at(index)" width="250px" height="140px"></video>
+            <video controls :src="video.filePath" width="250px" height="140px"></video>
           </div>
           <div class="video-main-bottom-cardList-card-bottom">
-            <h3>【英雄联盟】S7双三星亚索左伊</h3>
+            <h3>【{{video.fileDir}}】{{ video.fileName }}</h3>
           </div>
         </div>
       </div>
@@ -20,13 +20,31 @@
 
 <script>
 
+import axios from "axios";
+
 export default {
   name: "myVideo",
   data(){
     return {
-      paths:[require("../assets/test2.mp4"), require("../assets/h264编码视频.mp4")]
+      videos:[],
     }
   },
+  mounted() {
+    axios({
+      url: '/fileAndVideo/getAllVideo',
+      params:{
+        category:'全部',
+      },
+      method: 'get'
+    }).then(res => {
+      if (res.data.code === "200") {
+        this.videos = res.data.data ? res.data.data : []
+        this.videos.forEach((video)=>{
+          video.fileName = video.fileName.substring(0, video.fileName.indexOf("."));
+        })
+      }
+    })
+  }
 }
 </script>
 

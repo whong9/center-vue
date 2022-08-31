@@ -14,31 +14,18 @@
     </el-form-item>
     <el-form-item label="上传区域" :label-width="formLabelWidth">
       <el-upload
-          ref="uploadMutiple"
-          action=""
-          :show-file-list="false"
+          class="upload-demo"
           :multiple="true"
-          :before-upload="beforeUpload">
-        <el-button size="small" type="primary">选择文件上传</el-button>
+          ref="upload"
+          action="none"
+          :on-change="handleChange"
+          :on-remove="handleRemove"
+          :file-list="fileList"
+          :auto-upload="false">
+        <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+        <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
       </el-upload>
     </el-form-item>
-    <div class="el-form-div">
-      <el-table :data="uploadFilesList" style="width: 100%">
-        <el-table-column prop="name" :show-overflow-tooltip="true" label="名称">
-          <template slot-scope="scope">
-            <i style="color:#409EFF" class=" el-icon-s-order" />{{ scope.row.name }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="name" label="是否成功" align="left" width="210%">
-          <template slot-scope="scope">
-            <template v-if="scope.row.status==='success'">上传成功！</template>
-            <template v-else-if="scope.row.status==='error'">上传失败!</template>
-            <el-progress v-else :percentage="scope.row.progress" />
-          </template>
-        </el-table-column>
-        <el-table-column width="120" prop="size" label="大小" align="right" />
-      </el-table>
-    </div>
   </el-form>
 </template>
 
@@ -55,7 +42,6 @@ export default {
       form: {
         region: '',
       },
-      uploadFilesList: [],
       input:'',
       loading:false,
     };
@@ -75,52 +61,38 @@ export default {
       this.form.region = ''
       this.loading = false
     },
-    beforeUpload(file) {
-      const fileList = {}
-      for (const key in file) {
-        fileList[key] = file[key]
+    submitUpload() {
+      if (this.fileList.length === 0){
+        return this.$message.warning('请选择文件在上传')
       }
-      // status:uploading、success、error 文件上传状态
-      // progress 文件上传进度
-      this.uploadFilesList.push({ ...fileList, progress: 0, status: 'uploading' })
-      this.httpRequest(file, parms => {
-        this.showProgress(fileList, parms)
+      // this.$refs.upload.submit();
+      let formData = new FormData();
+      this.fileList.forEach((file) => {
+        formData.append('file', file.raw)
       })
-      // 阻止 el-upload的默认上传
-      return false
-    },
-    showProgress(file, parms) {
-      const { progress, status } = parms
-      const arr = [...this.uploadFilesList].map(items => {
-        if (items.uid === file.uid) {
-          items.progress = progress
-          items.status = status
-        }
-        return items
-      })
-      this.uploadFilesList = [...arr]
-    },
-    async httpRequest(file, callback) {
-      const formData = new FormData();
-      formData.append("file", file)
-      let progress = 0
       axios({
-        headers: { 'Content-Type': 'application/json;charset=UTF-8' },
         method: 'post',
-        url: 'http://localhost:7778/fileAndVideo/upload',
+        url: 'http://localhost:7778/fileAndVideo/uploadFiles',
         data: formData,
-        params: {
-          str: this.form.region
-        },
-        onUploadProgress: progressEvent => { // 获取文件上传进度 axios自带的
-          progress = (progressEvent.loaded / progressEvent.total * 100) | 0
-          callback({ progress, status: 'uploading' })
+        params:{
+          dir:this.form.region
         }
-      }).then(() => { // 成功状态
-        callback({ progress, status: 'success' })
-      }).catch(() => { // 失败状态
-        callback({ progress, status: 'error' })
-      })
+      }).then(
+          res=>{
+            if (res.data.code === '200'){
+              this.$message.success('文件上传成功')
+            } else {
+              this.$message.error('文件上传失败')
+            }
+            this.fileList = []
+          }
+      )
+    },
+    handleRemove(file, fileList) {
+      this.fileList = fileList
+    },
+    handleChange(file, fileList) {
+      this.fileList = fileList
     },
     ...mapActions('directory',
         {createDirectory:'createDirectory',getDirectory:'getDirectory',deleteDirectory:'deleteDirectory'})
@@ -135,10 +107,6 @@ export default {
 </script>
 
 <style scoped>
-.el-form-div {
-  margin-right: 7%;
-  margin-left: 7%;
-}
 .createCategory{
   margin-right: 5%;
   width: 35%;
