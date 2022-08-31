@@ -6,6 +6,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import './assets/iconfont/iconfont.css';
 import VueRouter from "vue-router";
 import router from "@/router";
+import store from "@/store";
 
 Vue.config.productionTip = false
 
@@ -16,4 +17,5 @@ new Vue({
   el: '#app',
   router:router,
   render: h => h(App),
+  store,
 })

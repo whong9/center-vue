@@ -1,9 +1,15 @@
 <template>
   <el-form>
+    <el-form-item label="目录增删" :label-width="formLabelWidth">
+      <div class="createCategory">
+        <el-input v-model="input" placeholder="请输入目录名称"></el-input>
+      </div>
+      <el-button type="primary" @click="createCategory" :loading="loading" :plain="true">添加</el-button>
+      <el-button type="danger" @click="deleteCategory" :loading="loading" :plain="true">删除</el-button>
+    </el-form-item>
     <el-form-item label="分类选择" :label-width="formLabelWidth">
       <el-select v-model="form.region" placeholder="请选择文件分类">
-        <el-option label="maple" value="maple"></el-option>
-        <el-option label="区域二" value="beijing"></el-option>
+        <el-option v-for="(name, index) of directories" :key="index" :label="name" :value="name"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="上传区域" :label-width="formLabelWidth">
@@ -12,8 +18,7 @@
           action=""
           :show-file-list="false"
           :multiple="true"
-          :before-upload="beforeUpload"
-      >
+          :before-upload="beforeUpload">
         <el-button size="small" type="primary">选择文件上传</el-button>
       </el-upload>
     </el-form-item>
@@ -39,6 +44,7 @@
 
 <script>
 import axios from "axios";
+import {mapActions, mapState} from "vuex";
 
 export default {
   name: "uploadFiles",
@@ -50,9 +56,25 @@ export default {
         region: '',
       },
       uploadFilesList: [],
+      input:'',
+      loading:false,
     };
   },
   methods: {
+    createCategory(){
+      this.loading = true
+      this.createDirectory(this.input).toString()
+      this.input = ''
+      this.form.region = ''
+      this.loading = false
+    },
+    deleteCategory(){
+      this.loading = true
+      this.deleteDirectory(this.input).toString()
+      this.input = ''
+      this.form.region = ''
+      this.loading = false
+    },
     beforeUpload(file) {
       const fileList = {}
       for (const key in file) {
@@ -99,8 +121,16 @@ export default {
       }).catch(() => { // 失败状态
         callback({ progress, status: 'error' })
       })
-    }
-  }
+    },
+    ...mapActions('directory',
+        {createDirectory:'createDirectory',getDirectory:'getDirectory',deleteDirectory:'deleteDirectory'})
+  },
+  computed:{
+    ...mapState('directory', ["directories"]),
+  },
+  mounted() {
+    this.getDirectory()
+  },
 }
 </script>
 
@@ -108,5 +138,12 @@ export default {
 .el-form-div {
   margin-right: 7%;
   margin-left: 7%;
+}
+.createCategory{
+  margin-right: 5%;
+  width: 35%;
+  display: flex;
+  justify-content: left;
+  float: left;
 }
 </style>

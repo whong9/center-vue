@@ -85,6 +85,7 @@
 
 <script>
 import UploadFiles from "@/components/uploadFiles";
+import {mapActions} from "vuex";
 
 export default {
 
@@ -112,7 +113,7 @@ export default {
   methods: {
     openWindow() {
       this.isOpen = true;
-    }
+    },
   }
 }
 </script>
@@ -138,7 +139,7 @@ a {
   height: 100%;
   background-size: cover;
   display: flex;
-  background-color: whitesmoke;
+  background-image: linear-gradient(to right, white, whitesmoke);
   position: fixed;
 }
 
@@ -152,7 +153,7 @@ body {
   /*    width: 280px;*/
   margin-right: 20px;
   height: 100%;
-  background: skyblue;
+  background: #336699;
   /*border-radius: 20px;*/
   overflow: hidden;
   transition: 0.5s;
@@ -178,7 +179,7 @@ body {
 }
 
 .btn-item:nth-child(1) {
-  background: #eb5a56;
+  background: deepskyblue;
 }
 
 .btn-item:nth-child(2) {
@@ -260,7 +261,7 @@ body {
 }
 
 .item:hover {
-  background: deepskyblue;
+  background: #409EFF;
 }
 
 .licon {
@@ -324,7 +325,7 @@ body {
 .light {
   width: 6px;
   height: 50px;
-  background: #eb5a56;
+  background: deepskyblue;
   position: absolute;
   left: -25px;
   transition: 0.5s;

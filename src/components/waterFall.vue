@@ -1,7 +1,7 @@
 <template>
   <div class="waterFall-box" ref="box">
     <div class="img-box" v-for="(item, index) in images" :key="index" ref="img">
-      <img :src="item">
+      <img :src="require('../assets' + item)" alt="">
     </div>
   </div>
 </template>
@@ -18,7 +18,7 @@ export default {
       heightArray: [],  //存储高度数组，用于判断最小高度的图片位置
       surplusW: 0, //是否存在剩余宽度
       offsetP: 0,
-      count: 1
+      count: 0
     }
   },
   methods: {
@@ -92,17 +92,16 @@ export default {
   },
   created() {
     axios({
-      url: '/fileAndVideo/getAllPicture',
-      method: 'get',
-      params: {
-        category: "maple",
+      url: '/fileAndVideo/getPicture',
+      params:{
+        param:'temp',
       },
+      method: 'get'
     }).then(res => {
       if (res.data.code === "200") {
         console.log(res.data.data);
         this.images = res.data.data ? res.data.data : []
         this.loadImgHeight()
-        this.count += 1
       }
     })
   }

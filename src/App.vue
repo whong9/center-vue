@@ -4,24 +4,18 @@
       <Side></Side>
     </div>
     <div class="index-right">
-      <div class="index-right-top">
-      </div>
-      <div class="index-right-bottom">
-        <router-view/>
-      </div>
+      <router-view/>
     </div>
   </div>
 </template>
 
 <script>
 import Side from "@/components/side";
-import WaterFall from "@/components/waterFall";
 
 export default {
   name: 'App',
   components: {
     Side,
-    WaterFall,
   }
 }
 </script>
@@ -55,9 +49,6 @@ body {
   height: 100%;
   width: 100%;
   z-index: 0;
-}
-#app .index-right .index-right-top {
-  margin: 3px;
-  height: 8%;
+  background-color: whitesmoke;
 }
 </style>

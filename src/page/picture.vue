@@ -1,19 +1,39 @@
 <template>
   <div class="picture-main">
     <div class="index-right-top">
+      <el-radio-group v-model="radio">
+        <el-radio-button
+            v-for="(name, index) of directories"
+            :key="index"
+            :label="name">
+        </el-radio-button>
+      </el-radio-group>
     </div>
     <div class="index-right-bottom">
-      <water-fall/>
+      <img src="../assets/cat.jpg" width="320" height="180">
     </div>
   </div>
 </template>
 
 <script>
-import WaterFall from "@/components/waterFall";
+import {mapActions, mapState} from "vuex";
 
 export default {
   name: "picture-vue",
-  components: {WaterFall},
+  data(){
+    return{
+      radio:'',
+    }
+  },
+  computed: {
+    ...mapState('directory', ['directories'])
+  },
+  methods:{
+    ...mapActions('directory', {getDirectory:'getDirectory', createDirectory:'createDirectory'})
+  },
+  mounted() {
+    this.getDirectory()
+  }
 }
 </script>
 
@@ -23,7 +43,7 @@ export default {
     width: 100%;
   }
   .picture-main .index-right-top {
-    margin: 3px;
+    margin: 25px 3px 25px 6%;
     height: 8%;
   }
   .picture-main .index-right-bottom {

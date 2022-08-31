@@ -24,7 +24,7 @@ export default {
   name: "myVideo",
   data(){
     return {
-      paths:[require("../assets/酒桶五杀.mp4"), require("../assets/闪现a兵.mp4")]
+      paths:[require("../assets/test2.mp4"), require("../assets/h264编码视频.mp4")]
     }
   },
 }
@@ -38,11 +38,11 @@ export default {
 .video-main .video-main-top {
   margin: 3px 3px 3px 2%;
   height: 8%;
-  background-color: #333333;
 }
 .video-main .video-main-bottom {
   height: 100%;
   margin-right: 5%;
+  background-color: whitesmoke;
   display: grid;
 }
 .video-main-bottom-cardList {
