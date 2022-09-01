@@ -1,11 +1,15 @@
 <template>
   <div id="app">
-    <div class="index-left">
-      <Side></Side>
-    </div>
-    <div class="index-right">
-      <router-view/>
-    </div>
+    <el-container>
+      <el-aside width="200px">
+        <Side></Side>
+      </el-aside>
+      <el-container>
+        <el-main>
+          <router-view/>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
@@ -40,16 +44,18 @@ body {
   height: 100% !important;
   flex-flow: row nowrap;
 }
-#app .index-left {
-  height: 100%;
-  width: 200px;
-  z-index: 1;
+.el-header, .el-footer {
+  background-color: #B3C0D1;
+  color: #333;
 }
-#app .index-right {
-  height: 100%;
-  width: 100%;
-  z-index: 0;
-  margin-right: 10px;
+
+.el-aside {
+  background-color: #D3DCE6;
+  color: #333;
+}
+
+.el-main {
   background-color: whitesmoke;
+  color: #333;
 }
 </style>

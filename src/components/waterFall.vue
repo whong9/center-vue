@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import {mapActions, mapState} from "vuex";
 
 export default {
   name: "WaterFall",
@@ -18,10 +18,22 @@ export default {
       heightArray: [],  //存储高度数组，用于判断最小高度的图片位置
       surplusW: 0, //是否存在剩余宽度
       offsetP: 0,
-      count: 0
+      count: 0,
     }
   },
+  props: ['type'],
+  watch:{
+
+  },
+  computed:{
+    ...mapState('picture', ['pictures'])
+  },
   methods: {
+    async initPicture(){
+      await this.getPictureByType('全部')
+      this.images = this.pictures
+      this.loadImgHeight()
+    },
     /**
      * 预加载图片资源
      * */
@@ -88,21 +100,11 @@ export default {
       }
       //对父容器赋值当前heightArray数组的最大高度
       this.$refs.box.style.height = Math.max(...this.heightArray) + 50 + 'px'
-    }
+    },
+    ...mapActions('picture', {getPictureByType:'getPictureByType'})
   },
-  created() {
-    axios({
-      url: '/fileAndVideo/getAllPicture',
-      params:{
-        category:'maple',
-      },
-      method: 'get'
-    }).then(res => {
-      if (res.data.code === "200") {
-        this.images = res.data.data ? res.data.data : []
-        this.loadImgHeight()
-      }
-    })
+  mounted() {
+    this.initPicture()
   }
 }
 </script>
@@ -125,7 +127,6 @@ export default {
   display: block;
   float: left;
   flex-direction: column;
-  border: 1px solid #cccccc;
 }
 
 .waterFall-box .img-box img {
@@ -136,7 +137,7 @@ export default {
 .waterFall-box .img-box img:hover {
   transform: translateY(-3px);
   transition: transform .5s ease-in-out;
-  box-shadow: 0 20px 20px 2px #737373;
+  box-shadow: 0 10px 10px 2px #737373;
 }
 
 @keyframes imgBox {

@@ -135,7 +135,7 @@ a {
 }
 
 .wrap {
-  width: 220px;
+  width: 200px;
   height: 100%;
   background-size: cover;
   display: flex;
@@ -151,7 +151,7 @@ body {
 .nav {
   width: 110px;
   /*    width: 280px;*/
-  margin-right: 20px;
+  /*margin-right: 20px;*/
   height: 100%;
   background: #336699;
   /*border-radius: 20px;*/
@@ -160,7 +160,7 @@ body {
 }
 
 .nav:hover {
-  width: 200px;
+  width: 100%;
 }
 
 .btn {
@@ -235,7 +235,7 @@ body {
 }
 
 .nav:hover .line {
-  width: 230px;
+  width: 100%;
 }
 
 .title {

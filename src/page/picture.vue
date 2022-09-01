@@ -1,24 +1,19 @@
 <template>
   <div class="picture-main">
-    <div class="index-right-top">
-      <div class="index-right-top-main">
-        <div class="index-right-top-main-button">
-          <el-radio-group v-model="radio">
-            <el-radio-button label="全部"></el-radio-button>
-            <el-radio-button
-                v-for="(name, index) of directories"
-                :key="index"
-                :label="name">
-            </el-radio-button>
-          </el-radio-group>
-        </div>
-      </div>
-    </div>
-    <div class="index-right-bottom">
-      <div class="index-right-bottom-main">
-        <water-fall/>
-      </div>
-    </div>
+    <el-header>
+      <el-radio-group v-model="type" class="top-left" @change="getPictureByType(type)">
+        <el-radio-button label="全部"></el-radio-button>
+        <el-radio-button
+            v-for="(name, index) of directories"
+            :key="index"
+            :label="name">
+        </el-radio-button>
+      </el-radio-group>
+      <el-button class="top-right" type="primary" size="medium" plain>上传<i class="el-icon-upload el-icon--right"></i></el-button>
+    </el-header>
+    <el-main>
+      <water-fall/>
+    </el-main>
   </div>
 </template>
 
@@ -33,14 +28,16 @@ export default {
   },
   data(){
     return{
-      radio:'全部',
+      type:'全部',
     }
   },
   computed: {
     ...mapState('directory', ['directories']),
+    ...mapState('picture', ['pictures'])
   },
   methods:{
-    ...mapActions('directory', {getDirectory:'getDirectory', createDirectory:'createDirectory'})
+    ...mapActions('directory', {getDirectory:'getDirectory', createDirectory:'createDirectory'}),
+    ...mapActions('picture', {getPictureByType:'getPictureByType'})
   },
   mounted() {
     this.getDirectory()
@@ -49,29 +46,25 @@ export default {
 </script>
 
 <style scoped>
-  .picture-main {
+  . picture-main {
     height: 100%;
     width: 100%;
   }
-  .picture-main .index-right-top {
-    margin: 0.5% 0 0.5% 0.5%;
-    height: 10%;
+  .top-left {
+    margin-left: 0.5%;
+    margin-top: 0.8%;
+  }
+  .top-right {
+    float: right;
+    margin-top: 0.8%;
+  }
+  .el-header{
     background-color: white;
     border: 1px solid #cccccc;
   }
-  .picture-main .index-right-top .index-right-top-main {
-    height: 70%;
-    margin-top: 2%;
-    margin-bottom: 1%;
-    margin-left: 2.7%;
-  }
-  .picture-main .index-right-bottom {
-    height: 88%;
-    width: 100%;
-    background-color: white;
-    border: 1px solid #cccccc;
-  }
-  .index-right-bottom-main {
+  .el-main{
     margin-top: 1%;
+    background-color: white;
+    border: 1px solid #cccccc;
   }
 </style>
