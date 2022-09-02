@@ -1,7 +1,7 @@
 <template>
   <div class="picture-main">
-    <el-header>
-      <el-radio-group v-model="type" class="top-left" @change="getPictureByType(type)">
+    <el-header class="el-header-back">
+      <el-radio-group v-model="type" class="top-left">
         <el-radio-button label="全部"></el-radio-button>
         <el-radio-button
             v-for="(name, index) of directories"
@@ -9,26 +9,34 @@
             :label="name">
         </el-radio-button>
       </el-radio-group>
-      <el-button class="top-right" type="primary" size="medium" plain>上传<i class="el-icon-upload el-icon--right"></i></el-button>
+      <el-button-group class="top-right">
+        <el-button type="primary" icon="el-icon-upload" @click="openUploadWindow">上传</el-button>
+      </el-button-group>
     </el-header>
-    <el-main>
-      <water-fall/>
+    <el-main class="el-main-back">
+      <water-fall :type="type"/>
     </el-main>
+    <el-dialog title="文件上传" :visible.sync="uploadIsOpen" :modal-append-to-body='false' width="45%">
+      <upload-files/>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import {mapActions, mapState} from "vuex";
 import waterFall from "@/components/waterFall";
+import uploadFiles from "@/components/uploadFiles";
 
 export default {
   name: "picture-vue",
   components:{
     waterFall,
+    uploadFiles,
   },
   data(){
     return{
       type:'全部',
+      uploadIsOpen:false,
     }
   },
   computed: {
@@ -37,7 +45,10 @@ export default {
   },
   methods:{
     ...mapActions('directory', {getDirectory:'getDirectory', createDirectory:'createDirectory'}),
-    ...mapActions('picture', {getPictureByType:'getPictureByType'})
+    ...mapActions('picture', {getPictureByType:'getPictureByType'}),
+    openUploadWindow(){
+      this.uploadIsOpen = true
+    },
   },
   mounted() {
     this.getDirectory()
@@ -59,12 +70,12 @@ export default {
     margin-top: 0.8%;
   }
   .el-header{
-    background-color: white;
     border: 1px solid #cccccc;
+    background-color: whitesmoke
   }
-  .el-main{
+  .el-main-back{
     margin-top: 1%;
-    background-color: white;
+    background-image: linear-gradient(180deg, whitesmoke, whitesmoke);
     border: 1px solid #cccccc;
   }
 </style>

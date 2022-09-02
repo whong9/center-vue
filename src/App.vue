@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <el-container>
-      <el-aside width="200px">
+      <el-aside width="200px" class="side">
         <Side></Side>
       </el-aside>
-      <el-container>
+      <el-container class="main">
         <el-main>
           <router-view/>
         </el-main>
@@ -48,14 +48,13 @@ body {
   background-color: #B3C0D1;
   color: #333;
 }
-
 .el-aside {
   background-color: #D3DCE6;
   color: #333;
 }
-
 .el-main {
-  background-color: whitesmoke;
+  /*background-color: whitesmoke;*/
   color: #333;
+  background-image: linear-gradient(180deg, skyblue, white);
 }
 </style>

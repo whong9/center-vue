@@ -68,24 +68,13 @@
           <a href="" class="con">英雄联盟</a>
           <div class="ricon"><span class="iconfont icon-yingxionglianmeng"></span></div>
         </div>
-        <div class="item">
-          <div class="light"></div>
-          <div class="licon"><span class="iconfont icon-cloudupload-fill"></span></div>
-          <a href="#" class="con" @click="openWindow">文件上传</a>
-          <div class="ricon"><span class="iconfont icon-cloudupload-fill"></span></div>
-        </div>
       </div>
     </div>
-
-    <el-dialog title="文件上传" :visible.sync="isOpen" :modal-append-to-body='false'>
-      <upload-files/>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import UploadFiles from "@/components/uploadFiles";
-import {mapActions} from "vuex";
 
 export default {
 
@@ -111,9 +100,7 @@ export default {
     UploadFiles
   },
   methods: {
-    openWindow() {
-      this.isOpen = true;
-    },
+
   }
 }
 </script>
@@ -126,10 +113,6 @@ export default {
   color: rgba(255, 255, 255, 0.6);
 }
 
-.el-dialog {
-  z-index: 2043 !important;
-}
-
 a {
   text-decoration: none;
 }
@@ -139,8 +122,9 @@ a {
   height: 100%;
   background-size: cover;
   display: flex;
-  background-image: linear-gradient(to right, white, whitesmoke);
   position: fixed;
+  background-image: linear-gradient(180deg, skyblue, white);
+  /*background-color: whitesmoke;*/
 }
 
 body {

@@ -1,16 +1,23 @@
 <template>
   <div class="waterFall-box" ref="box">
     <div class="img-box" v-for="(item, index) in images" :key="index" ref="img">
-      <img :src="item" alt="">
+      <img :src="item.filePath" alt="" @click="changeManagePicture(item)">
     </div>
+    <el-dialog title="图片管理" :visible.sync="managePicture" :modal-append-to-body='false' top="20vh" width="45%">
+      <manage-files :picture="picture"/>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import {mapActions, mapState} from "vuex";
+import manageFiles from "@/components/manageFiles";
 
 export default {
   name: "WaterFall",
+  components:{
+    manageFiles,
+  },
   data() {
     return {
       images: [], //存储图片资源
@@ -19,20 +26,42 @@ export default {
       surplusW: 0, //是否存在剩余宽度
       offsetP: 0,
       count: 0,
+      visible:false,
+      managePicture:false,
+      picture:'',
     }
   },
-  props: ['type'],
+  props: {
+    type:{
+      type:String,
+    }
+  },
   watch:{
-
+    async type(value){
+      this.images.splice(0)
+      this.heightArray.splice(0)
+      this.surplusW = 0
+      this.offsetP = 0
+      this.count = 0
+      await this.getPictureByType(value)
+      this.images = this.pictures
+      this.loadImgHeight()
+    }
   },
   computed:{
-    ...mapState('picture', ['pictures'])
+    ...mapState('picture', ['pictures']),
+    ...mapState('directory', ['directories'])
   },
   methods: {
+    changeManagePicture(value){
+      this.picture = value
+      this.managePicture = true
+    },
     async initPicture(){
       await this.getPictureByType('全部')
       this.images = this.pictures
       this.loadImgHeight()
+      this.loading = false
     },
     /**
      * 预加载图片资源
@@ -42,7 +71,7 @@ export default {
       Array.from(this.images).forEach((item) => {
         //使用image类预加载图片
         let image = new Image()
-        image.src = item
+        image.src = item.filePath
         image.onload = image.onerror = event => {
           count++
           if (count === this.images.length) {
@@ -95,16 +124,19 @@ export default {
         parentDom[i].style.transform = '50px'
         parentDom[i].style.position = 'absolute'
         parentDom[i].style.top = minHeight + 'px'
-        parentDom[i].style.left = this.imgWidth * index + +((Math.floor((this.surplusW / 2)) + 30)) + 'px'
+        parentDom[i].style.left = this.imgWidth * index + +((Math.floor((this.surplusW / 2)) + 10)) + 'px'
         this.heightArray[index] += currHeight
       }
       //对父容器赋值当前heightArray数组的最大高度
       this.$refs.box.style.height = Math.max(...this.heightArray) + 50 + 'px'
     },
-    ...mapActions('picture', {getPictureByType:'getPictureByType'})
+    ...mapActions('picture', {getPictureByType:'getPictureByType'}),
+    ...mapActions('directory', {getDirectory:'getDirectory'}),
   },
   mounted() {
+    this.loading = true
     this.initPicture()
+    this.getDirectory()
   }
 }
 </script>
@@ -115,7 +147,7 @@ export default {
   height: 100%;
   width: 100%;
   position: relative;
-  text-align: center;
+  text-align: left;
   overflow-y: hidden;
   /*display: flex;*/
   flex-direction: column;

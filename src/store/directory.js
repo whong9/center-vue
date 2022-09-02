@@ -10,7 +10,8 @@ export default {
         async createDirectory(context, value){
             await axios.get("http://localhost:7778/fileAndVideo/createDir",{
                 params:{
-                    name:value
+                    name:value[0],
+                    type:value[1]
                 }
             }).then((response)=>{
                 context.commit('getDir', response.data.data)
@@ -22,6 +23,19 @@ export default {
             await axios.get("http://localhost:7778/fileAndVideo/deleteDir",{
                 params:{
                     name:value
+                }
+            }).then((response)=>{
+                context.commit('getDir', response.data.data)
+            }).catch((error) => {
+                console.log(error);
+            });
+        },
+        async changePictureDir(context, value){
+            await axios.get("http://localhost:7778/fileAndVideo/changeFileDir",{
+                params:{
+                    fileId:value[0],
+                    fileDir:value[1],
+                    fileType:1,
                 }
             }).then((response)=>{
                 context.commit('getDir', response.data.data)

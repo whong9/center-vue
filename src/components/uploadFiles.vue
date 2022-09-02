@@ -1,16 +1,18 @@
 <template>
   <el-form>
-    <el-form-item label="目录增删" :label-width="formLabelWidth">
+    <el-form-item label="新增目录" :label-width="formLabelWidth">
       <div class="createCategory">
         <el-input v-model="input" placeholder="请输入目录名称"></el-input>
       </div>
-      <el-button type="primary" @click="createCategory" :loading="loading" :plain="true">添加</el-button>
-      <el-button type="danger" @click="deleteCategory" :loading="loading" :plain="true">删除</el-button>
+      <el-button type="primary" @click="createCategory" :loading="loading">添加目录</el-button>
     </el-form-item>
     <el-form-item label="分类选择" :label-width="formLabelWidth">
-      <el-select v-model="form.region" placeholder="请选择文件分类">
-        <el-option v-for="(name, index) of directories" :key="index" :label="name" :value="name"></el-option>
-      </el-select>
+      <div class="createCategory">
+        <el-select v-model="form.region" placeholder="请选择文件分类">
+          <el-option v-for="(name, index) of directories" :key="index" :label="name" :value="name"></el-option>
+        </el-select>
+      </div>
+      <el-button type="danger" @click="deleteCategory" :loading="loading">删除目录</el-button>
     </el-form-item>
     <el-form-item label="上传区域" :label-width="formLabelWidth">
       <el-upload
@@ -38,7 +40,7 @@ export default {
   data() {
     return {
       fileList: [],
-      formLabelWidth: '120px',
+      formLabelWidth: '150px',
       form: {
         region: '',
       },
@@ -56,7 +58,7 @@ export default {
     },
     deleteCategory(){
       this.loading = true
-      this.deleteDirectory(this.input).toString()
+      this.deleteDirectory(this.form.region).toString()
       this.input = ''
       this.form.region = ''
       this.loading = false
@@ -75,18 +77,20 @@ export default {
         url: 'http://localhost:7778/fileAndVideo/uploadFiles',
         data: formData,
         params:{
-          dir:this.form.region
+          dir:this.form.region,
+          type:1,
         }
-      }).then(
-          res=>{
+      }).then((res)=>{
             if (res.data.code === '200'){
               this.$message.success('文件上传成功')
             } else {
-              this.$message.error('文件上传失败')
+              this.$message.error(res.data.message)
             }
             this.fileList = []
           }
-      )
+      ).catch((error)=>{
+        this.$message.error(error)
+      })
     },
     handleRemove(file, fileList) {
       this.fileList = fileList
@@ -109,7 +113,7 @@ export default {
 <style scoped>
 .createCategory{
   margin-right: 5%;
-  width: 35%;
+  width: 40%;
   display: flex;
   justify-content: left;
   float: left;

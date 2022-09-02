@@ -199,6 +199,7 @@ main {
 .content-inner, .wrap {
   width: 100%;
   height: 100vh
+
 }
 
 .wrap {
