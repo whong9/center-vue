@@ -37,6 +37,7 @@ export default {
     }
   },
   watch:{
+    //实现图片顶栏分目录切换图片功能
     async type(value){
       this.images.splice(0)
       this.heightArray.splice(0)
@@ -49,10 +50,10 @@ export default {
     }
   },
   computed:{
-    ...mapState('picture', ['pictures']),
-    ...mapState('directory', ['directories'])
+    ...mapState('fileAndDirectory', ['pictures','directories']),
   },
   methods: {
+    ...mapActions('fileAndDirectory', {getPictureByType:'getPictureByType',getDirectory:'getDirectory'}),
     changeManagePicture(value){
       this.picture = value
       this.managePicture = true
@@ -61,7 +62,6 @@ export default {
       await this.getPictureByType('全部')
       this.images = this.pictures
       this.loadImgHeight()
-      this.loading = false
     },
     /**
      * 预加载图片资源
@@ -130,13 +130,10 @@ export default {
       //对父容器赋值当前heightArray数组的最大高度
       this.$refs.box.style.height = Math.max(...this.heightArray) + 50 + 'px'
     },
-    ...mapActions('picture', {getPictureByType:'getPictureByType'}),
-    ...mapActions('directory', {getDirectory:'getDirectory'}),
   },
   mounted() {
-    this.loading = true
     this.initPicture()
-    this.getDirectory()
+    this.getDirectory(1)
   }
 }
 </script>

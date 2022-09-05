@@ -27,19 +27,21 @@ export default {
   },
   props:['picture'],
   methods:{
-    ...mapActions('directory', {getDirectory:'getDirectory', changePictureDir:'changePictureDir'}),
-    changePictureDirectory(){
+    ...mapActions('fileAndDirectory',
+        {getDirectory:'getDirectory', changePictureDir:'changePictureDir',getPictureByType:'getPictureByType'}),
+    async changePictureDirectory(){
       let fileId = this.picture.fileId
       let fileDir = this.form.region
       let arr = [fileId, fileDir]
-      this.changePictureDir(arr)
+      await this.changePictureDir(arr)
+      await this.getPictureByType(1)
     },
   },
   computed:{
-    ...mapState('directory', ["directories"]),
+    ...mapState('fileAndDirectory', ["directories"]),
   },
   mounted() {
-    this.getDirectory()
+    this.getDirectory(1)
   },
 }
 </script>

@@ -4,7 +4,7 @@
       <div class="createCategory">
         <el-input v-model="input" placeholder="请输入目录名称"></el-input>
       </div>
-      <el-button type="primary" @click="createCategory" :loading="loading">添加目录</el-button>
+      <el-button type="primary" @click="createCategory">添加目录</el-button>
     </el-form-item>
     <el-form-item label="分类选择" :label-width="formLabelWidth">
       <div class="createCategory">
@@ -12,7 +12,7 @@
           <el-option v-for="(name, index) of directories" :key="index" :label="name" :value="name"></el-option>
         </el-select>
       </div>
-      <el-button type="danger" @click="deleteCategory" :loading="loading">删除目录</el-button>
+      <el-button type="danger" @click="deleteCategory">删除目录</el-button>
     </el-form-item>
     <el-form-item label="上传区域" :label-width="formLabelWidth">
       <el-upload
@@ -45,29 +45,35 @@ export default {
         region: '',
       },
       input:'',
-      loading:false,
     };
   },
   methods: {
-    createCategory(){
-      this.loading = true
-      this.createDirectory(this.input).toString()
+    async createCategory(){
+      let arr = [this.input, 1]
+      await this.createDirectory(arr)
       this.input = ''
       this.form.region = ''
-      this.loading = false
+      if (this.code === '200') {
+        this.$message.success(this.msg)
+      } else {
+        this.$message.error(this.msg)
+      }
     },
-    deleteCategory(){
-      this.loading = true
-      this.deleteDirectory(this.form.region).toString()
+    async deleteCategory(){
+      let arr = [this.form.region, 1]
+      await this.deleteDirectory(arr)
       this.input = ''
       this.form.region = ''
-      this.loading = false
+      if (this.code === '200') {
+        this.$message.success(this.msg)
+      } else {
+        this.$message.error(this.msg)
+      }
     },
     submitUpload() {
       if (this.fileList.length === 0){
         return this.$message.warning('请选择文件在上传')
       }
-      // this.$refs.upload.submit();
       let formData = new FormData();
       this.fileList.forEach((file) => {
         formData.append('file', file.raw)
@@ -87,6 +93,7 @@ export default {
               this.$message.error(res.data.message)
             }
             this.fileList = []
+            this.uploadIsOpen = false
           }
       ).catch((error)=>{
         this.$message.error(error)
@@ -98,14 +105,14 @@ export default {
     handleChange(file, fileList) {
       this.fileList = fileList
     },
-    ...mapActions('directory',
-        {createDirectory:'createDirectory',getDirectory:'getDirectory',deleteDirectory:'deleteDirectory'})
+    ...mapActions('fileAndDirectory',
+        {createDirectory:'createDirectory',getDirectory:'getDirectory',deleteDirectory:'deleteDirectory'}),
   },
   computed:{
-    ...mapState('directory', ["directories"]),
+    ...mapState('fileAndDirectory', ["directories","msg","code","pictures","uploadIsOpen"]),
   },
   mounted() {
-    this.getDirectory()
+    this.getDirectory(1)
   },
 }
 </script>
