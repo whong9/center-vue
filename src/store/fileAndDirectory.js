@@ -72,9 +72,10 @@ export default {
             });
         },
         async getPictureByType(context, value){
-            await axios.get("/fileAndVideo/getPicturesByType", {
+            await axios.get("/fileAndVideo/getFilesByDir", {
                 params:{
-                    type:value
+                    dir:value,
+                    type:1
                 }
             }).then((response)=>{
                 context.commit('getPictureByType', response.data.data)
@@ -83,7 +84,7 @@ export default {
             });
         },
         async deletePicture(context, value){
-            await axios.get("/fileAndVideo/deletePicture", {
+            await axios.get("/fileAndVideo/deleteFile", {
                 params:{
                     pictureId:value
                 }
