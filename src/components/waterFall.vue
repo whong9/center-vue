@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
 import manageFiles from "@/components/manageFiles";
 
 export default {
@@ -28,17 +28,17 @@ export default {
       count: 0,
       visible:false,
       managePicture:false,
-      picture:'',
+      picture:{},
     }
   },
   props: {
-    type:{
-      type:String,
+    pictureType:{
+      pictureType:String,
     }
   },
   watch:{
     //实现图片顶栏分目录切换图片功能
-    async type(value){
+    async pictureType(value){
       this.images.splice(0)
       this.heightArray.splice(0)
       this.surplusW = 0
@@ -47,16 +47,38 @@ export default {
       await this.getPictureByType(value)
       this.images = this.pictures
       this.loadImgHeight()
+    },
+    refresh:{
+      async handler(){
+        this.images.splice(0)
+        this.heightArray.splice(0)
+        this.surplusW = 0
+        this.offsetP = 0
+        this.count = 0
+        await this.getPictureByType(this.pictureType)
+        this.images = this.pictures
+        this.loadImgHeight()
+        this.setRefresh(0)
+      }
+    },
+    openWindow:{
+      async handler(value){
+        if (value === 0){
+          this.managePicture = false
+        }
+      }
     }
   },
   computed:{
-    ...mapState('fileAndDirectory', ['pictures','directories']),
+    ...mapState('fileAndDirectory', ['pictures','directories','refresh','openWindow']),
   },
   methods: {
     ...mapActions('fileAndDirectory', {getPictureByType:'getPictureByType',getDirectory:'getDirectory'}),
+    ...mapMutations('fileAndDirectory', {setRefresh:'setRefresh',setOpenWindow:'setOpenWindow'}),
     changeManagePicture(value){
       this.picture = value
       this.managePicture = true
+      this.setOpenWindow(1)
     },
     async initPicture(){
       await this.getPictureByType('全部')

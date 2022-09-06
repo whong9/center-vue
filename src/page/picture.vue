@@ -14,10 +14,10 @@
       </el-button-group>
     </el-header>
     <el-main class="el-main-back">
-      <water-fall :type="type"/>
+      <water-fall :pictureType="type"/>
     </el-main>
     <el-dialog title="图片管理" :visible.sync="uploadIsOpen" :modal-append-to-body='false' width="45%">
-      <upload-files/>
+      <upload-files :pictureType="type"/>
     </el-dialog>
   </div>
 </template>

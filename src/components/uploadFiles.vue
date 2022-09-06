@@ -33,7 +33,7 @@
 
 <script>
 import axios from "axios";
-import {mapActions, mapState} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
 
 export default {
   name: "uploadFiles",
@@ -47,6 +47,22 @@ export default {
       input:'',
     };
   },
+  props: {
+    pictureType:{
+      pictureType:String,
+    }
+  },
+  watch:{
+    pictureType:{
+      handler(){
+        if (this.pictureType === '全部'){
+          this.form.region = ''
+        } else {
+          this.form.region = this.pictureType
+        }
+      }
+    }
+  },
   methods: {
     async createCategory(){
       let arr = [this.input, 1]
@@ -58,6 +74,7 @@ export default {
       } else {
         this.$message.error(this.msg)
       }
+      this.dir = this.input
     },
     async deleteCategory(){
       let arr = [this.form.region, 1]
@@ -70,7 +87,7 @@ export default {
         this.$message.error(this.msg)
       }
     },
-    submitUpload() {
+    async submitUpload() {
       if (this.fileList.length === 0){
         return this.$message.warning('请选择文件在上传')
       }
@@ -78,7 +95,7 @@ export default {
       this.fileList.forEach((file) => {
         formData.append('file', file.raw)
       })
-      axios({
+      await axios({
         method: 'post',
         url: 'http://localhost:7778/fileAndVideo/uploadFiles',
         data: formData,
@@ -98,6 +115,8 @@ export default {
       ).catch((error)=>{
         this.$message.error(error)
       })
+      this.setRefresh(1)
+      this.setOpenWindow(0)
     },
     handleRemove(file, fileList) {
       this.fileList = fileList
@@ -107,9 +126,10 @@ export default {
     },
     ...mapActions('fileAndDirectory',
         {createDirectory:'createDirectory',getDirectory:'getDirectory',deleteDirectory:'deleteDirectory'}),
+    ...mapMutations('fileAndDirectory', {setRefresh:'setRefresh',setOpenWindow:'setOpenWindow'})
   },
   computed:{
-    ...mapState('fileAndDirectory', ["directories","msg","code","pictures","uploadIsOpen"]),
+    ...mapState('fileAndDirectory', ["directories","msg","code","pictures",'dir']),
   },
   mounted() {
     this.getDirectory(1)

@@ -72,12 +72,27 @@ export default {
             });
         },
         async getPictureByType(context, value){
-            await axios.get("/fileAndVideo/getPictures", {
+            await axios.get("/fileAndVideo/getPicturesByType", {
                 params:{
                     type:value
                 }
             }).then((response)=>{
                 context.commit('getPictureByType', response.data.data)
+            }).catch((error) => {
+                console.log(error);
+            });
+        },
+        async deletePicture(context, value){
+            await axios.get("/fileAndVideo/deletePicture", {
+                params:{
+                    pictureId:value
+                }
+            }).then((response)=>{
+                if (response.data.code === '200'){
+                    context.commit('setCode', response.data.code)
+                    context.commit('getPictureByType', response.data.data)
+                }
+                context.commit('setMsg', response.data.message)
             }).catch((error) => {
                 console.log(error);
             });
@@ -96,15 +111,21 @@ export default {
         getPictureByType(state, value){
             state.pictures = value
         },
-        setUploadIsOpen(state, value){
-            state.uploadIsOpen = value
+        setRefresh(state,value){
+            state.refresh = value
+        },
+        setOpenWindow(state,value){
+            state.openWindow = value
         },
     },
     state:{
-        directories:[],
-        msg:'',
-        code:'',
-        pictures: [],
+        directories:[], //从后端获取目录存放目录
+        msg:'',         //接收后端传来的响应信息
+        code:'',        //接收后端传来的响应编码
+        pictures: [],   //图片集合
+        refresh:0,      //是否刷新页面 0不刷新，1刷新
+        openWindow:0,   //是否关闭窗口，0关闭，1开启
+        dir:''          //当前操作目录
     },
     getters:{
 
