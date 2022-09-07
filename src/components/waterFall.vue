@@ -44,8 +44,9 @@ export default {
       this.surplusW = 0
       this.offsetP = 0
       this.count = 0
-      await this.getPictureByType(value)
-      this.images = this.pictures
+      let arr = [value, 1]
+      await this.getPictureByDir(arr)
+      this.images = this.files
       this.loadImgHeight()
     },
     refresh:{
@@ -55,8 +56,9 @@ export default {
         this.surplusW = 0
         this.offsetP = 0
         this.count = 0
-        await this.getPictureByType(this.pictureType)
-        this.images = this.pictures
+        let arr = [this.pictureType, 1]
+        await this.getPictureByDir(arr)
+        this.images = this.files
         this.loadImgHeight()
         this.setRefresh(0)
       }
@@ -70,10 +72,10 @@ export default {
     }
   },
   computed:{
-    ...mapState('fileAndDirectory', ['pictures','directories','refresh','openWindow']),
+    ...mapState('fileAndDirectory', ['files','directories','refresh','openWindow']),
   },
   methods: {
-    ...mapActions('fileAndDirectory', {getPictureByType:'getPictureByType',getDirectory:'getDirectory'}),
+    ...mapActions('fileAndDirectory', {getPictureByDir:'getFileByDir',getDirectory:'getDirectory'}),
     ...mapMutations('fileAndDirectory', {setRefresh:'setRefresh',setOpenWindow:'setOpenWindow'}),
     changeManagePicture(value){
       this.picture = value
@@ -81,8 +83,9 @@ export default {
       this.setOpenWindow(1)
     },
     async initPicture(){
-      await this.getPictureByType('全部')
-      this.images = this.pictures
+      let arr = ['全部', 1]
+      await this.getPictureByDir(arr)
+      this.images = this.files
       this.loadImgHeight()
     },
     /**

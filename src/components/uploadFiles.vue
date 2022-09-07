@@ -129,7 +129,7 @@ export default {
     ...mapMutations('fileAndDirectory', {setRefresh:'setRefresh',setOpenWindow:'setOpenWindow'})
   },
   computed:{
-    ...mapState('fileAndDirectory', ["directories","msg","code","pictures",'dir']),
+    ...mapState('fileAndDirectory', ["directories","msg","code",'dir']),
   },
   mounted() {
     this.getDirectory(1)

@@ -71,14 +71,14 @@ export default {
                 console.log(error);
             });
         },
-        async getPictureByType(context, value){
+        async getFileByDir(context, value){
             await axios.get("/fileAndVideo/getFilesByDir", {
                 params:{
-                    dir:value,
-                    type:1
+                    dir:value[0],
+                    type:value[1],
                 }
             }).then((response)=>{
-                context.commit('getPictureByType', response.data.data)
+                context.commit('getFilesByType', response.data.data)
             }).catch((error) => {
                 console.log(error);
             });
@@ -86,12 +86,12 @@ export default {
         async deletePicture(context, value){
             await axios.get("/fileAndVideo/deleteFile", {
                 params:{
-                    pictureId:value
+                    fileId:value
                 }
             }).then((response)=>{
                 if (response.data.code === '200'){
                     context.commit('setCode', response.data.code)
-                    context.commit('getPictureByType', response.data.data)
+                    context.commit('getFilesByType', response.data.data)
                 }
                 context.commit('setMsg', response.data.message)
             }).catch((error) => {
@@ -109,8 +109,8 @@ export default {
         setCode(state, value){
             state.code = value
         },
-        getPictureByType(state, value){
-            state.pictures = value
+        getFilesByType(state, value){
+            state.files = value
         },
         setRefresh(state,value){
             state.refresh = value
@@ -123,7 +123,7 @@ export default {
         directories:[], //从后端获取目录存放目录
         msg:'',         //接收后端传来的响应信息
         code:'',        //接收后端传来的响应编码
-        pictures: [],   //图片集合
+        files: [],      //文件集合
         refresh:0,      //是否刷新页面 0不刷新，1刷新
         openWindow:0,   //是否关闭窗口，0关闭，1开启
         dir:''          //当前操作目录
