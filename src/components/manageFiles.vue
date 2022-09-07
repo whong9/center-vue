@@ -47,15 +47,25 @@ export default {
       await this.getPictureByDir(arr2)
       this.setRefresh(1)
       this.setOpenWindow(0)
+      if (this.code === '200') {
+        this.$message.success(this.msg)
+      } else {
+        this.$message.error(this.msg)
+      }
     },
     async deleteFile(){
       await this.deletePicture(this.picture.fileId)
       this.setRefresh(1)
       this.setOpenWindow(0)
+      if (this.code === '200') {
+        this.$message.success(this.msg)
+      } else {
+        this.$message.error(this.msg)
+      }
     },
   },
   computed:{
-    ...mapState('fileAndDirectory', ["directories"]),
+    ...mapState('fileAndDirectory', ["directories","msg","code"]),
   },
   mounted() {
     this.getDirectory(1)
