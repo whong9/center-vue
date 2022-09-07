@@ -1,5 +1,11 @@
 <template>
   <el-form>
+    <el-form-item class="message">
+      <h4>
+        文件名: {{file.name}}<br>
+        文件存放目录: {{file.fileDir}}
+      </h4>
+    </el-form-item>
     <el-form-item label="分类选择" :label-width="formLabelWidth">
       <div class="createCategory">
         <el-select v-model="form.region" placeholder="请选择文件分类">
@@ -7,7 +13,7 @@
         </el-select>
       </div>
       <el-button type="primary" @click="changePictureDirectory">移动到该目录</el-button>
-      <el-button type="danger" @click="deleteFile">删除图片</el-button>
+      <el-button type="danger" @click="deleteFile">删除该文件</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -21,16 +27,16 @@ export default {
     return{
       formLabelWidth: '120px',
       form: {
-        region: this.picture.fileDir,
+        region: this.file.fileDir,
       },
     }
   },
-  props:['picture'],
+  props:['file','fileType'],
   watch:{
-    picture:{
+    file:{
       deep:true,
       handler(){
-        this.form.region = this.picture.fileDir
+        this.form.region = this.file.fileDir
       }
     }
   },
@@ -39,10 +45,10 @@ export default {
         {getDirectory:'getDirectory', changePictureDir:'changePictureDir',getPictureByDir:'getFileByDir',deletePicture:'deletePicture'}),
     ...mapMutations('fileAndDirectory', {setRefresh:'setRefresh',setOpenWindow:'setOpenWindow'}),
     async changePictureDirectory(){
-      let fileId = this.picture.fileId
+      let fileId = this.file.fileId
       let fileDir = this.form.region
       let arr = [fileId, fileDir]
-      let arr2 = [fileDir, 1]
+      let arr2 = [fileDir, this.fileType]
       await this.changePictureDir(arr)
       await this.getPictureByDir(arr2)
       this.setRefresh(1)
@@ -54,7 +60,7 @@ export default {
       }
     },
     async deleteFile(){
-      await this.deletePicture(this.picture.fileId)
+      await this.deletePicture(this.file.fileId)
       this.setRefresh(1)
       this.setOpenWindow(0)
       if (this.code === '200') {
@@ -68,7 +74,7 @@ export default {
     ...mapState('fileAndDirectory', ["directories","msg","code"]),
   },
   mounted() {
-    this.getDirectory(1)
+    this.getDirectory(this.fileType)
   },
 }
 </script>
@@ -81,5 +87,16 @@ export default {
   display: flex;
   justify-content: left;
   float: left;
+}
+.message {
+  margin: 0;
+  text-align: left;
+}
+h4{
+  margin-block-start: 0;
+  margin-block-end: 1em;
+  margin-inline-start: 52px;
+  color: #606266;
+  /*font-weight: normal;*/
 }
 </style>

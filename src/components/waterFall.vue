@@ -4,7 +4,7 @@
       <img :src="item.filePath" alt="" @click="changeManagePicture(item)">
     </div>
     <el-dialog title="图片管理" :visible.sync="managePicture" :modal-append-to-body='false' top="20vh" width="45%">
-      <manage-files :picture="picture"/>
+      <manage-files :file="picture" :fileType="1"/>
     </el-dialog>
   </div>
 </template>
@@ -50,17 +50,19 @@ export default {
       this.loadImgHeight()
     },
     refresh:{
-      async handler(){
-        this.images.splice(0)
-        this.heightArray.splice(0)
-        this.surplusW = 0
-        this.offsetP = 0
-        this.count = 0
-        let arr = [this.pictureType, 1]
-        await this.getPictureByDir(arr)
-        this.images = this.files
-        this.loadImgHeight()
-        this.setRefresh(0)
+      async handler(value){
+        if (value === 1) {
+          this.images.splice(0)
+          this.heightArray.splice(0)
+          this.surplusW = 0
+          this.offsetP = 0
+          this.count = 0
+          let arr = [this.pictureType, 1]
+          await this.getPictureByDir(arr)
+          this.images = this.files
+          this.loadImgHeight()
+          this.setRefresh(0)
+        }
       }
     },
     openWindow:{
@@ -171,7 +173,7 @@ export default {
   position: relative;
   text-align: left;
   overflow-y: hidden;
-  /*display: flex;*/
+  display: flex;
   flex-direction: column;
 }
 

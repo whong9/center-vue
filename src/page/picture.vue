@@ -1,7 +1,7 @@
 <template>
   <div class="picture-main">
     <el-header class="el-header-back">
-      <el-radio-group v-model="type" class="top-left">
+      <el-radio-group v-model="dir" class="top-left">
         <el-radio-button label="全部"></el-radio-button>
         <el-radio-button
             v-for="(name, index) of directories"
@@ -14,10 +14,10 @@
       </el-button-group>
     </el-header>
     <el-main class="el-main-back">
-      <water-fall :pictureType="type"/>
+      <water-fall :pictureType="dir"/>
     </el-main>
     <el-dialog title="图片管理" :visible.sync="uploadIsOpen" :modal-append-to-body='false' width="45%">
-      <upload-files :pictureType="type"/>
+      <upload-files :fileDir="dir" :fileType="1"/>
     </el-dialog>
   </div>
 </template>
@@ -35,8 +35,9 @@ export default {
   },
   data(){
     return{
-      type:'全部',
+      dir:'全部',
       uploadIsOpen:false,
+      dirs:[],
     }
   },
   computed: {
@@ -55,7 +56,7 @@ export default {
 </script>
 
 <style scoped>
-  . picture-main {
+  .picture-main {
     height: 100%;
     width: 100%;
   }

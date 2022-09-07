@@ -48,24 +48,27 @@ export default {
     };
   },
   props: {
-    pictureType:{
-      pictureType:String,
+    fileDir:{
+      fileDir:String,
+    },
+    fileType:{
+
     }
   },
   watch:{
-    pictureType:{
+    fileDir:{
       handler(){
-        if (this.pictureType === '全部'){
+        if (this.fileDir === '全部'){
           this.form.region = ''
         } else {
-          this.form.region = this.pictureType
+          this.form.region = this.fileDir
         }
       }
     }
   },
   methods: {
     async createCategory(){
-      let arr = [this.input, 1]
+      let arr = [this.input, this.fileType]
       await this.createDirectory(arr)
       this.input = ''
       this.form.region = ''
@@ -77,7 +80,7 @@ export default {
       this.dir = this.input
     },
     async deleteCategory(){
-      let arr = [this.form.region, 1]
+      let arr = [this.form.region, this.fileType]
       await this.deleteDirectory(arr)
       this.input = ''
       this.form.region = ''
@@ -101,17 +104,17 @@ export default {
         data: formData,
         params:{
           dir:this.form.region,
-          type:1,
+          type:this.fileType,
         }
       }).then((res)=>{
-            if (res.data.code === '200'){
-              this.$message.success('文件上传成功')
-            } else {
-              this.$message.error(res.data.message)
-            }
-            this.fileList = []
-            this.uploadIsOpen = false
+          if (res.data.code === '200'){
+            this.$message.success('文件上传成功')
+          } else {
+            this.$message.error(res.data.message)
           }
+          this.fileList = []
+          this.uploadIsOpen = false
+        }
       ).catch((error)=>{
         this.$message.error(error)
       })
@@ -132,7 +135,7 @@ export default {
     ...mapState('fileAndDirectory', ["directories","msg","code",'dir']),
   },
   mounted() {
-    this.getDirectory(1)
+    this.getDirectory(this.fileType)
   },
 }
 </script>
