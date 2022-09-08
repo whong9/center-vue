@@ -10,13 +10,13 @@
         </el-radio-button>
       </el-radio-group>
       <el-button-group class="top-right">
-        <el-button type="primary" icon="el-icon-upload" @click="openUploadWindow">管理</el-button>
+        <el-button type="primary" icon="el-icon-upload" @click="openUploadWindow">上传</el-button>
       </el-button-group>
     </el-header>
     <el-main class="el-main-back">
       <water-fall :pictureType="dir"/>
     </el-main>
-    <el-dialog title="图片管理" :visible.sync="uploadIsOpen" :modal-append-to-body='false' width="45%">
+    <el-dialog title="图片上传" :visible.sync="uploadIsOpen" :modal-append-to-body='false' width="45%">
       <upload-files :fileDir="dir" :fileType="1"/>
     </el-dialog>
   </div>

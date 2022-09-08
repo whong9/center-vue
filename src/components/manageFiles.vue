@@ -42,13 +42,14 @@ export default {
   },
   methods:{
     ...mapActions('fileAndDirectory',
-        {getDirectory:'getDirectory', changePictureDir:'changePictureDir',getPictureByDir:'getFileByDir',deletePicture:'deletePicture'}),
+        {getDirectory:'getDirectory', changePictureDir:'changePictureDir',getPictureByDir:'getFileByDir',deletePicture:'deleteFile'}),
     ...mapMutations('fileAndDirectory', {setRefresh:'setRefresh',setOpenWindow:'setOpenWindow'}),
     async changePictureDirectory(){
       let fileId = this.file.fileId
       let fileDir = this.form.region
-      let arr = [fileId, fileDir]
+      let arr = [fileId, fileDir, this.fileType]
       let arr2 = [fileDir, this.fileType]
+      console.log(this.fileType);
       await this.changePictureDir(arr)
       await this.getPictureByDir(arr2)
       this.setRefresh(1)

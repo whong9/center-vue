@@ -59,7 +59,7 @@ export default {
                 params:{
                     fileId:value[0],
                     fileDir:value[1],
-                    fileType:1,
+                    fileType:value[2],
                 }
             }).then((response)=>{
                 if (response.data.code === '200'){
@@ -83,7 +83,7 @@ export default {
                 console.log(error);
             });
         },
-        async deletePicture(context, value){
+        async deleteFile(context, value){
             await axios.get("/fileAndVideo/deleteFile", {
                 params:{
                     fileId:value
