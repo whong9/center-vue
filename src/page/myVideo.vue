@@ -20,7 +20,7 @@
           <video controls :src="video.filePath" width="250px" height="140px" onfocus=""></video>
         </div>
         <div class="video-main-bottom-cardList-card-bottom">
-          <h3 @click="openManageFileWindow(video)">【{{video.fileDir}}】{{ video.name }}</h3>
+          <h3 @click="openManageFileWindow(video)">【{{ video.fileDir }}】{{ video.name }}</h3>
         </div>
       </div>
     </el-main>
@@ -68,30 +68,31 @@
 import {mapActions, mapMutations, mapState} from "vuex";
 import uploadFiles from "@/components/uploadFiles";
 import manageFiles from "@/components/manageFiles";
+import axios from "axios";
 
 export default {
   name: "myVideo",
-  data(){
+  data() {
     return {
-      videos:[],
-      dir:'全部',
-      uploadIsOpen:false,
-      video:{},
-      manageVideo:false,
-      manageWindow:false,
+      videos: [],
+      dir: '全部',
+      uploadIsOpen: false,
+      video: {},
+      manageVideo: false,
+      manageWindow: false,
     }
   },
-  components:{
+  components: {
     uploadFiles,
     manageFiles,
   },
   computed: {
-    ...mapState('fileAndDirectory', ['directories','files','refresh','openWindow']),
+    ...mapState('fileAndDirectory', ['directories', 'files', 'refresh', 'openWindow']),
   },
-  watch:{
-    refresh:{
-      async handler(value){
-        setTimeout(async ()=>{
+  watch: {
+    refresh: {
+      async handler(value) {
+        setTimeout(async () => {
           if (value === 1) {
             let arr = [this.dir, 2]
             await this.getVideosByDir(arr)
@@ -101,42 +102,46 @@ export default {
         }, 50)
       }
     },
-    openWindow:{
-      async handler(value){
-        if (value === 0){
+    openWindow: {
+      async handler(value) {
+        if (value === 0) {
           this.manageVideo = false
         }
       }
     },
-    dir:{
-      async handler(  ){
+    dir: {
+      async handler() {
         let arr = [this.dir, 2]
         await this.getVideosByDir(arr)
         this.videos = this.files
       }
-    }
+    },
   },
-  methods:{
-    ...mapActions('fileAndDirectory', {getDirectory:'getDirectory',getVideosByDir:'getFileByDir',deleteVideo:'deleteFile'}),
-    ...mapMutations('fileAndDirectory', {setRefresh:'setRefresh',setOpenWindow:'setOpenWindow'}),
-    openManageWindow(){
+  methods: {
+    ...mapActions('fileAndDirectory', {
+      getDirectory: 'getDirectory',
+      getVideosByDir: 'getFileByDir',
+      deleteVideo: 'deleteFile'
+    }),
+    ...mapMutations('fileAndDirectory', {setRefresh: 'setRefresh', setOpenWindow: 'setOpenWindow'}),
+    openManageWindow() {
       this.manageWindow = true
     },
-    openUploadWindow(){
+    openUploadWindow() {
       this.uploadIsOpen = true
     },
-    openManageFileWindow(value){
+    openManageFileWindow(value) {
       this.video = value
       this.manageVideo = true
       this.setOpenWindow(1)
     },
-    async initVideo(){
+    async initVideo() {
       await this.getDirectory(2)
-      let arr = [this.dir,2]
+      let arr = [this.dir, 2]
       await this.getVideosByDir(arr)
       this.videos = this.files
     },
-    async deleteFile(){
+    async deleteFile() {
       await this.deleteVideo(this.file.fileId)
       this.setRefresh(1)
       this.setOpenWindow(0)
@@ -169,30 +174,37 @@ export default {
   height: 140px;
   width: 250px;
 }
-.video-main-bottom-cardList-card-bottom{
+
+.video-main-bottom-cardList-card-bottom {
   height: 60px;
   width: 250px;
 }
+
 video {
   border-radius: 6px;
 }
+
 h3 {
   font-size: 15px;
   cursor: pointer;
 }
+
 .top-left {
   margin-left: 0.5%;
   margin-top: 0.8%;
 }
+
 .top-right {
   float: right;
   margin-top: 0.8%;
 }
-.el-header{
+
+.el-header {
   border: 1px solid #cccccc;
   background-color: whitesmoke
 }
-.el-main-back{
+
+.el-main-back {
   margin-top: 1%;
   height: 90%;
   background-image: linear-gradient(180deg, whitesmoke, whitesmoke);
@@ -202,10 +214,12 @@ h3 {
   flex-flow: wrap;
   padding-left: 50px;
 }
+
 .red-font {
   color: red;
 }
-video:focus{
+
+video:focus {
   outline: -webkit-focus-ring-color auto 2px;
 }
 </style>

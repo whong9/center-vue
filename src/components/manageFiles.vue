@@ -45,19 +45,21 @@ export default {
         {getDirectory:'getDirectory', changePictureDir:'changePictureDir',getPictureByDir:'getFileByDir',deletePicture:'deleteFile'}),
     ...mapMutations('fileAndDirectory', {setRefresh:'setRefresh',setOpenWindow:'setOpenWindow'}),
     async changePictureDirectory(){
-      let fileId = this.file.fileId
-      let fileDir = this.form.region
-      let arr = [fileId, fileDir, this.fileType]
-      let arr2 = [fileDir, this.fileType]
-      console.log(this.fileType);
-      await this.changePictureDir(arr)
-      await this.getPictureByDir(arr2)
-      this.setRefresh(1)
-      this.setOpenWindow(0)
-      if (this.code === '200') {
-        this.$message.success(this.msg)
+      if (this.file.fileDir === this.form.region) {
+        this.$message.warning("请选择其他的目录")
       } else {
-        this.$message.error(this.msg)
+        let fileId = this.file.fileId
+        let fileDir = this.form.region
+        let arr = [fileId, fileDir, this.fileType]
+        console.log(this.fileType);
+        await this.changePictureDir(arr)
+        this.setRefresh(1)
+        this.setOpenWindow(0)
+        if (this.code === '200') {
+          this.$message.success(this.msg)
+        } else {
+          this.$message.error(this.msg)
+        }
       }
     },
     async deleteFile(){

@@ -1,5 +1,4 @@
 import axios from "axios";
-import {getDirectory} from "@/api/request";
 
 export default {
     namespaced:true,
@@ -126,7 +125,6 @@ export default {
         files: [],      //文件集合
         refresh:0,      //是否刷新页面 0不刷新，1刷新
         openWindow:0,   //是否关闭窗口，0关闭，1开启
-        dir:''          //当前操作目录
     },
     getters:{
 
