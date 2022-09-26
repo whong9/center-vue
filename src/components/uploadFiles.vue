@@ -51,9 +51,7 @@ export default {
     fileDir:{
       fileDir:String,
     },
-    fileType:{
-
-    }
+    fileType:{}
   },
   watch:{
     fileDir:{
@@ -132,7 +130,7 @@ export default {
     ...mapMutations('fileAndDirectory', {setRefresh:'setRefresh',setOpenWindow:'setOpenWindow'})
   },
   computed:{
-    ...mapState('fileAndDirectory', ["directories","msg","code",'dir']),
+    ...mapState('fileAndDirectory', ["directories","msg","code"]),
   },
   mounted() {
     this.getDirectory(this.fileType)

@@ -13,8 +13,8 @@ export default {
                 context.commit('setCode', res.data.code)
                 context.commit('setMsg', res.data.message)
                 if (res.data.code === "200") {
-                    console.log(res.data.data);
                     context.commit('setToken', res.data.data)
+                    localStorage.setItem('token', res.data.data)
                 }
             })
         }

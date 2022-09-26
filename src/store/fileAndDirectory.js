@@ -1,26 +1,40 @@
 import axios from "axios";
+import request from "@/api/request";
 
 export default {
     namespaced:true,
     actions:{
-        // async getDirectory(context){
-        //     context.commit('getDir', await getDirectory)
+        // async getDirectory(context, value){
+        //     await axios.get("/fileAndVideo/getDir",{
+        //         headers:{
+        //             'token':localStorage.getItem('token')
+        //         },
+        //         params:{
+        //             dirType:value,
+        //         }
+        //     }).then((response) => {
+        //             context.commit('getDir',response.data.data)
+        //         })
+        //         .catch((error) => {
+        //             console.log(error);
+        //         });
         // },
         async getDirectory(context, value){
-            await axios.get("http://localhost:7778/fileAndVideo/getDir",{
+            await request.get("/fileAndVideo/getDir",{
                 params:{
                     dirType:value,
                 }
-            })
-                .then((response) => {
-                    context.commit('getDir',response.data.data)
-                })
-                .catch((error) => {
+            }).then((response) => {
+                context.commit('getDir',response.data.data)
+            }).catch((error) => {
                     console.log(error);
                 });
         },
         async createDirectory(context, value){
-            await axios.get("http://localhost:7778/fileAndVideo/createDir",{
+            await axios.get("/fileAndVideo/createDir",{
+                headers:{
+                    'token':localStorage.getItem('token')
+                },
                 params:{
                     name:value[0],
                     dirType:value[1]
@@ -37,7 +51,10 @@ export default {
             });
         },
         async deleteDirectory(context, value){
-            await axios.get("http://localhost:7778/fileAndVideo/deleteDir",{
+            await axios.get("/fileAndVideo/deleteDir",{
+                headers:{
+                    'token':localStorage.getItem('token')
+                },
                 params:{
                     name:value[0],
                     dirType:value[1]
@@ -54,7 +71,10 @@ export default {
             });
         },
         async changePictureDir(context, value){
-            await axios.get("http://localhost:7778/fileAndVideo/changeFileDir",{
+            await axios.get("/fileAndVideo/changeFileDir",{
+                headers:{
+                    'token':localStorage.getItem('token')
+                },
                 params:{
                     fileId:value[0],
                     fileDir:value[1],
@@ -72,6 +92,9 @@ export default {
         },
         async getFileByDir(context, value){
             await axios.get("/fileAndVideo/getFilesByDir", {
+                headers:{
+                    'token':localStorage.getItem('token')
+                },
                 params:{
                     dir:value[0],
                     type:value[1],
@@ -84,6 +107,9 @@ export default {
         },
         async deleteFile(context, value){
             await axios.get("/fileAndVideo/deleteFile", {
+                headers:{
+                    'token':localStorage.getItem('token')
+                },
                 params:{
                     fileId:value
                 }

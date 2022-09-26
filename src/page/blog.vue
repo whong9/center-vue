@@ -4,14 +4,16 @@
   <el-button @click="sendText">点击发送</el-button><br>
   <input type="text" v-model="username"></input><br>
   <input type="text" v-model="password"></input><br>
-  <el-button @click="login">登录</el-button><br>
+  <el-button @click="login">登录</el-button>
+  <el-button @click="exit">注销</el-button>
 </div>
 </template>
 
 <script>
 import axios from "axios";
 import JSEncrypt from 'jsencrypt';
-import {mapActions, mapMutations, mapState} from "vuex";
+import {mapActions, mapState} from "vuex";
+import router from "@/router";
 
 export default {
   name: "blog",
@@ -44,10 +46,14 @@ export default {
       const rsaPwd = encrypt.encrypt(this.password);
       let arr = [this.username, rsaPwd]
       await this.userLogin(arr)
+      await router.push('/picture')
+    },
+    async exit(){
+      localStorage.removeItem('token')
     }
   },
   mounted(){
-    axios.get("/fileAndVideo/getPublicKey").then(res=>{
+    axios.get("/user/getPublicKey").then(res=>{
       this.publicKey = res.data.data
     })
   }

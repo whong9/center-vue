@@ -160,7 +160,6 @@ export default {
   },
   mounted() {
     this.initPicture()
-    this.getDirectory(1)
   }
 }
 </script>
