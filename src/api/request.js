@@ -18,6 +18,7 @@ axios.defaults.withCredentials = true;
 axios.interceptors.request.use(config => {
     //配置请求头，使得headers携带上token
     config.headers["token"] = localStorage.getItem('token');
+    config.headers["user"] = localStorage.getItem('user');
     return config
 }, error => {
     return Promise.reject(error)
@@ -38,7 +39,7 @@ axios.interceptors.response.use(res => {
                 type: 'error'
             });
         }
-    };
+    }
     // 如果请求为非200否者默认统一处理
     if (status.toString() !== "200") {
         // Message({

@@ -15,6 +15,7 @@ export default {
                 if (res.data.code === "200") {
                     context.commit('setToken', res.data.data)
                     localStorage.setItem('token', res.data.data)
+                    localStorage.setItem('user', value[0])
                 }
             })
         }
