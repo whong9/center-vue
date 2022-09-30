@@ -12,13 +12,10 @@ axios.defaults.validateStatus = function (status) {
     return status >= 200 && status <= 500;
 };
 //跨域请求，允许保存cookie
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = false;
 
 //http request拦截 ，此处用到es6 Promise
 axios.interceptors.request.use(config => {
-    //配置请求头，使得headers携带上token
-    config.headers["token"] = localStorage.getItem('token');
-    config.headers["user"] = localStorage.getItem('user');
     return config
 }, error => {
     return Promise.reject(error)
@@ -41,12 +38,14 @@ axios.interceptors.response.use(res => {
         }
     }
     // 如果请求为非200否者默认统一处理
-    if (status.toString() !== "200") {
-        // Message({
-        //     message: message,
-        //     type: 'error'
-        // });
-        return Promise.reject(new Error(message))
+    if (status === 500) {
+        if (router.currentRoute.path !== '/blog'){
+            router.push({ path: '/blog' })
+            Message({
+                message: "请重新登录",
+                type: 'error'
+            });
+        }
     }
     return res;
 }, error => {

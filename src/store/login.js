@@ -12,18 +12,10 @@ export default {
             }).then(res =>{
                 context.commit('setCode', res.data.code)
                 context.commit('setMsg', res.data.message)
-                if (res.data.code === "200") {
-                    context.commit('setToken', res.data.data)
-                    localStorage.setItem('token', res.data.data)
-                    localStorage.setItem('user', value[0])
-                }
             })
         }
     },
     mutations:{
-        setToken(state, value) {
-            state.token = value
-        },
         setCode(state, value) {
             state.code = value
         },

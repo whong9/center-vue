@@ -5,7 +5,7 @@
   <input type="text" v-model="username"></input><br>
   <input type="text" v-model="password"></input><br>
   <el-button @click="login">登录</el-button>
-  <el-button @click="exit">注销</el-button>
+  <el-button @click="logout">注销</el-button>
 </div>
 </template>
 
@@ -48,8 +48,8 @@ export default {
       await this.userLogin(arr)
       await router.push('/picture')
     },
-    async exit(){
-      localStorage.removeItem('token')
+    async logout(){
+      await axios.get("/user/logout")
     }
   },
   mounted(){

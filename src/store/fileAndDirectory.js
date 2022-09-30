@@ -92,9 +92,6 @@ export default {
         },
         async getFileByDir(context, value){
             await axios.get("/fileAndVideo/getFilesByDir", {
-                headers:{
-                    'token':localStorage.getItem('token')
-                },
                 params:{
                     dir:value[0],
                     type:value[1],
@@ -107,9 +104,6 @@ export default {
         },
         async deleteFile(context, value){
             await axios.get("/fileAndVideo/deleteFile", {
-                headers:{
-                    'token':localStorage.getItem('token')
-                },
                 params:{
                     fileId:value
                 }
